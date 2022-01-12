@@ -1,0 +1,101 @@
+version: '3.8'
+services:
+  web:
+    container_name: multiapp-web
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - 5001:8990
+    restart: unless-stopped
+    networks:
+      - multiapp-tier
+    depends_on:
+      - useraddress-api
+      - userdetails-api
+      - useredu-api
+      - userjob-api
+    environment:
+      - NODE_ENV=development
+
+  useraddress-api:
+    container_name: multiapp-useraddress-api
+    build: 
+      context: ./useraddress-api
+      dockerfile: ./Dockerfile
+    ports:
+      - 5002:8446
+    restart: unless-stopped
+    networks:
+      - multiapp-tier
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=development
+
+  useredu-api:
+    container_name: multiapp-useredu-api
+    build: 
+      context: ./useredu-api
+      dockerfile: ./Dockerfile
+    ports:
+      - 5003:8445
+    restart: unless-stopped
+    networks:
+      - multiapp-tier
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=development
+  
+  userdetails-api:
+    container_name: multiapp-userdetails-api
+    build: 
+      context: ./userdetails-api
+      dockerfile: ./Dockerfile
+    ports:
+      - 5004:8447
+    restart: unless-stopped
+    networks:
+      - multiapp-tier
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=development
+  
+  userjob-api:
+    container_name: multiapp-userjob-api
+    build: 
+      context: ./userjob-api
+      dockerfile: ./Dockerfile
+    ports:
+      - 5005:8444
+    restart: unless-stopped
+    networks:
+      - multiapp-tier
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=development
+
+  mongo:
+    image: mongo:4.4-bionic
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME:$MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD:$MONGO_INITDB_ROOT_PASSWORD
+    networks:
+      - multiapp-tier
+    volumes:
+      - simple-server-data:/data/db
+
+volumes:
+  simple-server-data:
+    driver: local
+
+networks:
+  multiapp-tier:
+    driver: bridge
