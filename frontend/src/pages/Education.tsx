@@ -13,7 +13,7 @@ export const Education = () => {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         try {
-            const BASE_URL  = 'http://localhost:8445';
+            const BASE_URL  = 'http://localhost:5003';
             setLoading(true);
             const { data } = await axios.post(`${BASE_URL}`, {
                 name, location, field

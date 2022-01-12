@@ -8,7 +8,7 @@ export const AddressList = () => {
      * @fetchData gets the list addresses in the database
     */
     const fetchData = async () => {
-        const BASE_URL  = 'http://localhost:8446';
+        const BASE_URL  = 'http://localhost:5002';
         try {
             const response = await axios.get(`${BASE_URL}`)
             setData(response.data)
