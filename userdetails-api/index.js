@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json())
 const bodyParser = require("body-parser")
 var corsOptions = {
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:3000"
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:5001"
   };
 app.use(cors(corsOptions));
 console.log("DDDDD", process.env.DATABASE_URL);
